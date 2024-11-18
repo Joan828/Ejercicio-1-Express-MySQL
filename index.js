@@ -5,6 +5,7 @@ const PORT = 3000
 
 app.use(express.json())
 
+//Crea endpoint de base de datos 
 app.get("/createdb", (req, res)=>{
     let sql = "CREATE DATABASE expressDB"
     db.query(sql, (err, result)=>{
@@ -14,6 +15,7 @@ app.get("/createdb", (req, res)=>{
 
 })
 
+//Crea las siguientes tablas usando Express y MySQL como hemos visto en clase
 app.get("/createTableProducts", (req, res)=>{
     let sql = "CREATE TABLE Products(id INT AUTO_INCREMENT,name_product VARCHAR(50),price INT, PRIMARY KEY(id))"
     db.query(sql, (err, result)=>{
@@ -31,6 +33,7 @@ app.get("/createTableCategories", (req, res)=>{
 
 })
 
+//*Recuerda que en el caso de una relación muchos a muchos necesitarás una tabla intermedia.
 app.get("/createTableCat-Prod", (req, res)=>{
     let sql = "CREATE TABLE Categories_products(id INT AUTO_INCREMENT, id_cat INT, id_prod INT, FOREIGN KEY(id_cat) REFERENCES Products(id), FOREIGN KEY(id_prod) REFERENCES Categories(id), PRIMARY KEY(id))"
     db.query(sql, (err, result)=>{
@@ -40,6 +43,7 @@ app.get("/createTableCat-Prod", (req, res)=>{
 
 })
 
+//Crea un endpoint para añadir un producto nuevo y añade 2 productos nuevos desde el postman
 app.post("/addProductPostman", (req, res)=>{
     let sql = `INSERT INTO Products(name_product, price) values ("${req.body.name}", ${req.body.price})`
     db.query(sql, (err, result)=>{
@@ -49,6 +53,7 @@ app.post("/addProductPostman", (req, res)=>{
 
 })
 
+//Crea un endpoint para crear una categoría y añade 2 categorías nuevas desde el postman
 app.post("/addCategoryPostman", (req, res)=>{
     let sql = `INSERT INTO Categories(name_category, description) values ("${req.body.name}", "${req.body.description}")`
     db.query(sql, (err, result)=>{
@@ -58,6 +63,7 @@ app.post("/addCategoryPostman", (req, res)=>{
 
 })
 
+// Crea un endpoint para actualizar un producto.
 app.put("/updateProduct/:id", (req, res)=>{
     let sql = `UPDATE Products SET price = ${req.body.price} WHERE id = ${req.params.id}`
     db.query(sql, (err, result)=>{
@@ -67,6 +73,7 @@ app.put("/updateProduct/:id", (req, res)=>{
 
 })
 
+// Crea un endpoint para actualizar una categoría.
 app.put("/updateCategory/:id", (req, res)=>{
     let sql = `UPDATE Categories SET name_category = "${req.body.name}" WHERE id = ${req.params.id}`
     db.query(sql, (err, result)=>{
